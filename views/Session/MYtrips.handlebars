@@ -1,0 +1,53 @@
+
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+</head>
+
+
+<body>
+
+  <ul class="nav">
+  <li class="nav-item">
+    <a class="nav-link" href='/'>Login</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href='../Session/addTrips'>ADD Trip</a>
+  </li>
+  <li class="nav-item active">
+    <a class="nav-link" href='../Session/MYtrips'>My Trips</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href='/trips'>ALL Trips</a>
+  </li>
+</ul>
+
+{{#user}}
+  <h3>{{userName}}</h3>
+
+<!-- starting of the loop -->
+  {{#userTrips}}
+
+    <div class="card bg-dark text-black">
+  <img class="card-img" src="{{imageURL}}" alt="Card image">
+  <div class="card-img-overlay">
+    <h1 class="card-title">{{title}}</h1>
+    <p class="card-text">{{dateOfDeparture}}</p>
+    <p class="card-text">{{dateOfReturn}}</p>
+    <!-- creating forms so we can submit tripId for deletion -->
+      <form class="card-text" action='/deleteTrip' method='post'>
+        <input type="hidden" name="tripId" value='{{tripId}}' />
+        <button class='btn btn-primary' type="submit" value="Delete" >DELETE THIS</button>
+      </form>
+  </div>
+</div>
+
+
+  {{/userTrips}}
+  {{/user}}
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</html>
