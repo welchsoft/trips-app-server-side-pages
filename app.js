@@ -1,9 +1,13 @@
 const express = require('express')
 const app = express()
 const exphbs = require('express-handlebars')
+var server = require('http').createServer(app)
 
 // npm install express-session --save
 var session = require('express-session')
+
+// io is socket.io instance
+var io = require('socket.io').listen(server)
 
 // importing the Trip class from trip.js file
 const Trip = require('./trip')
@@ -23,6 +27,12 @@ let trips = []
 var bodyParser = require('body-parser')
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+
+// setting up the javascript file as a static resource
+// http://localhost:3000/client.js
+// http://localhost:3000/image1.png
+app.use(express.static('public'))
+
 // setting the templating engine to use mustache
 app.engine('handlebars',exphbs())
 // setting the mustache pages directory
@@ -153,6 +163,23 @@ app.get('/trips',function(req,res){
   res.render('trips', {userList: users})
 })
 
+io.on('connection',function(socket){
+  console.log('USER IS CONNECTED!!!')
+
+  // creating a channel called chat
+  socket.on('chat',function(message){
+    // send back the server response to the user
+    io.emit('chat',message)
+  })
+
+})
+
+app.get('/Session/chat', function(req,res){
+  res.render(__dirname + '/views/Session/chat.handlebars',{user : users.find(function (user) { return user.userName === req.session.username })})
+})
+
+
+
 // get the guid
 function guid() {
   function s4() {
@@ -164,4 +191,4 @@ function guid() {
 }
 
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+server.listen(3000, () => console.log('Example app listening on port 3000!'))
